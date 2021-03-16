@@ -1,10 +1,17 @@
 #include <iostream>
+#include <utility>
+#include <unordered_map>
 #include "Direction.hpp"
 
 namespace ariel {
     class Board {
+    private:
+        int max_row, max_col;
+
     public:
-        Board(/*arguments*/);
+        std::unordered_map<int, std::unordered_map<int, char>> board;
+
+        Board();
 
         void post(int row, int column, ariel::Direction direction, std::string message);
 
