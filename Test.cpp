@@ -28,7 +28,7 @@ TEST_CASE ("My sister's name is Michal") {
 }
 
 TEST_CASE ("My fave artist is Eminem") {
-    board.post(0, 10, Direction::Horizontal, "My fave artist is Eminem");
+    board.post(0, 10, Direction::Vertical, "My fave artist is Eminem");
             CHECK(board.read(0, 6, Direction::Horizontal, 8) == "ve cMts_");
             CHECK(board.read(8, 1, Direction::Horizontal, 13) == "___t_____a___");
 }
@@ -47,25 +47,25 @@ TEST_CASE ("I have no money") {
 
 TEST_CASE ("Tell me what to do") {
     board.post(2, 14, Direction::Vertical, "Tell me what to do");
-            CHECK(board.read(12, 3, Direction::Vertical, 16) == "_ _____s___a_____");
+            CHECK(board.read(12, 3, Direction::Horizontal, 16) == "_ _____s___a____");
             CHECK(board.read(100, 109, Direction::Vertical, 4) == "____"); //Trying to read where nothing was written- Vertical
 }
 
 
 TEST_CASE ("Popcorn") {
     board.post(3, 18, Direction::Horizontal, "Popcorn");
-            CHECK(board.read(3, 0, Direction::Horizontal, 32) == "____My sisfe'e napopcornichal__");
+            CHECK(board.read(3, 0, Direction::Horizontal, 32) == "____My sisfer'e naPopcornichal__");
             CHECK(board.read(100, 109, Direction::Horizontal, 4) == "____"); //Trying to read where nothing was written- Horizontal
 }
 
 TEST_CASE ("123456789") {
     board.post(22, 6, Direction::Horizontal, "123456789");
             CHECK(board.read(0, 12, Direction::Vertical, 25) == "s__r___u_______n______7__");
-            CHECK(board.read(18, 10, Direction::Horizontal, 6) == "Emin5m");
+            CHECK(board.read(18, 10, Direction::Vertical, 6) == "Emin5m");
 }
 
 TEST_CASE ("-)(&*%^#$$~") {
     board.post(15, 5, Direction::Horizontal, "-)(&*%^#$$~");
-            CHECK(board.read(0, 10, Direction::Vertical, 23) == "My fave artist ^s Emin5m");
-            CHECK(board.read(13, 14, Direction::Vertical, 6) == "t ~o d");
+            CHECK(board.read(0, 10, Direction::Vertical, 24) == "My fave artist %s Emin5m");
+            CHECK(board.read(13, 14, Direction::Vertical, 6) == "t $o d");
 }
