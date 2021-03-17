@@ -21,7 +21,7 @@ int main() {
 	cout << board.read(/*row=*/100, /*column=*/200, Direction::Horizontal, /*length=*/6) << endl;
 		// prints "abyd__" (First letters are ab; then y from the "xyz"; then d; then two empty cells).
 
-	//board.show(); // shows the board in a reasonable way. For example:
+	board.show(); // shows the board in a reasonable way. For example:
 		//    98:  _________
 		//    99:  ____x____
 		//    100: __abyd___

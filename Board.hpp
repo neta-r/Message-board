@@ -6,7 +6,9 @@
 namespace ariel {
     class Board {
     private:
-        int max_row, max_col;
+        int max_row, max_col, min_row, min_col;
+        void horizontal_dimensions (int row, int col ,int length);
+        void vertical_dimensions (int row, int col, int length);
 
     public:
         std::unordered_map<int, std::unordered_map<int, char>> board;
