@@ -13,9 +13,11 @@ int main() {
     cout << "please enter the number of messages you want to write: " << endl;
     cin >> num;
     for (int i=0; i<num; i++){
-        std::string message;
+        string message;
         int col , row, direction;
-
+        cout << "please enter the message you want to write: " << endl;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        getline (cin, message);
         cout << "press 0 to a horizontal message and 1 to a vertical message: " << endl;
         cin >> direction;
         if (direction!=0 && direction!=1){
@@ -26,8 +28,6 @@ int main() {
         cin >> row;
         cout << "please enter the column: " << endl;
         cin >> col;
-        cout << "please enter the message you want to write: " << endl;
-        cin >> message;
         board.post(row,col,ariel::Direction(direction), message);
         board.show();
     }
