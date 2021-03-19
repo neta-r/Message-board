@@ -21,99 +21,81 @@ namespace ariel {
      * Beside for the case that the message is posted in column 0-1 -> in this case the minimum column allowed is 0.
      */
 
-    //This function fixes the board's proportions when the user want to post a horizontal message.
-    void Board::horizontal_proportion(int row, int col, int length) {
-        if (row + 1 > this->max_row) {
-            max_row = row + 1;
+
+    //This function fixes the board's proportions when the user want to post a vertical message.
+    void Board::fix_proportion(int row, int col, int length, ariel::Direction direction) {
+        int r_length=0;
+        int c_length=0;
+        switch (direction) {
+            case (Direction::Horizontal):
+                r_length = 0;
+                c_length = length;
+                break;
+            case (Direction::Vertical):
+                r_length = length;
+                c_length = 0;
+                break;
+        }
+        if (col + c_length + 1 > this->max_col) {
+            max_col = col + c_length + 1;
+        }
+        if (col - 1 < this->min_col) {
+            if (col >= 0 && col <= 1) {
+                min_col = 0;
+            } else {
+                min_col = col - 1;
+            }
+        }
+        if (row + r_length + 1 > this->max_row) {
+            max_row = row + r_length + 1;
         }
         if (row - 1 < this->min_row) {
             if (row >= 0 && row <= 1) {
                 min_row = 0;
             } else {
                 min_row = row - 1;
-            }
-        }
-        if (col + length + 3 > this->max_col) {
-            max_col = col + length + 3;
-        }
-        if (col - 3 < this->min_col) {
-            if (col >= 0 && col <= 3) {
-                min_col = 0;
-            } else {
-                min_col = col - 3;
             }
         }
     }
 
-    //This function fixes the board's proportions when the user want to post a vertical message.
-    void Board::vertical_proportion(int row, int col, int length) {
-        if (col + 3 > this->max_col) {
-            max_col = col + 3;
-        }
-        if (col - 3 < this->min_col) {
-            if (col >= 0 && col <= 3) {
-                min_col = 0;
-            } else {
-                min_col = col - 3;
-            }
-        }
-        if (row + length + 1 > this->max_row) {
-            max_row = row + length + 1;
-        }
-        if (row - 1 < this->min_row) {
-            if (row >= 0 && row <= 1) {
-                min_row = 0;
-            } else {
-                min_row = row - 1;
-            }
+    //This function decide whether to promote the i or the j according to the direction.
+    void plusplus(int &i, int &j, ariel::Direction direction) {
+        switch (direction) {
+            case (Direction::Horizontal):
+                j++;
+                break;
+            case (Direction::Vertical):
+                i++;
+                break;
         }
     }
 
     void Board::post(int row, int column, ariel::Direction direction, std::string message) {
-        switch (direction) {
-            case (Direction::Horizontal):
-                horizontal_proportion(row, column, message.size());
-                for (int i = 0; i < message.size(); i++) {
-                    board[row][column + i] = message.at(i);
-                }
-                break;
-            case (Direction::Vertical):
-                vertical_proportion(row, column, message.size());
-                for (int i = 0; i < message.size(); i++) {
-                    board[row + i][column] = message.at(i);
-                }
-                break;
+        int i = 0;
+        int j = 0;
+        fix_proportion(row, column, message.size(), direction);
+        for (int run = 0; run < message.size(); run++) {
+            board[row + i][column + j] = message.at(run);
+            plusplus(i, j, direction);
         }
     }
 
 
     std::string Board::read(int row, int column, ariel::Direction direction, int length) {
         std::string ans;
-        switch (direction) {
-            case (Direction::Horizontal):
-                for (int i = 0; i < length; i++) {
-                    try { //trying to get to board[row][column + i]
-                        char cur = board.at(row).at(column + i);
-                        ans +=cur; //the char exist
-                    }
-                    catch (exception ex) { //the char doesn't exist
-                        ans+= "_";
-                    }
-                }
-                return ans;
-
-            case (Direction::Vertical):
-                for (int i = 0; i < length; i++) {
-                    try { //trying to get to board[row + i][column]
-                        char cur = board.at(row + i).at(column);
-                        ans +=cur; //the char exist
-                    }
-                    catch (exception ex) { //the char doesn't exist
-                        ans +="_";
-                    }
-                }
-                return ans;
+        int i = 0;
+        int j = 0;
+        for (int run = 0; run<length; run++) {
+            try {
+                char cur = board.at(row + i).at(column + j);
+                ans += cur; //the char exist
+            }
+            catch (exception ex) { //the char doesn't exist
+                ans += "_";
+            }
+            plusplus(i, j, direction);
         }
+        return ans;
     }
 
 
@@ -131,12 +113,15 @@ namespace ariel {
             max_c = default_max_col;
         }
         std::string ans;
-        for (int i = 0; i < max_r - min_r; i++) {
-            //sending to the read function each line (horizontal) as the number of the lines (maximum column - minimum column).
-            ans += read(min_r + i, min_c, Direction::Horizontal, max_c - min_c);
-            ans +="\n";
+        cout << "max_row: " <<max_row << endl;
+        int num_of_rows = max_r - min_r;
+        int num_of_cols = max_c - min_c;
+        if (num_of_rows==1) num_of_rows++;
+        for (int i = 0; i < num_of_rows; i++) {
+            //sending to the read function each line (horizontal) as the number of the columns.
+            ans += read(min_r + i, min_c, Direction::Horizontal, num_of_cols);
+            ans += "\n";
         }
         std::cout << ans << endl;
     }
-
 }

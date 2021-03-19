@@ -8,8 +8,7 @@ namespace ariel {
     private:
         int default_min_row = 0 ,default_max_row = 10 , default_min_col = 0 , default_max_col = 10;
         int max_row, max_col, min_row, min_col;
-        void horizontal_proportion (int row, int col ,int length);
-        void vertical_proportion (int row, int col, int length);
+        void fix_proportion(int row, int col, int length, ariel::Direction direction);
 
     public:
         std::unordered_map<int, std::unordered_map<int, char>> board;

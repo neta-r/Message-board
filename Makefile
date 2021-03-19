@@ -10,6 +10,9 @@ OBJECTS=$(subst .cpp,.o,$(SOURCES))
 run: demo
 	./$^
 
+mymain: myMain.o $(OBJECTS)
+	$(CXX) $(CXXFLAGS) $^ -o myMain
+
 main: main.o $(OBJECTS)
 	$(CXX) $(CXXFLAGS) $^ -o main
 
@@ -30,4 +33,4 @@ valgrind: demo test
 	$(CXX) $(CXXFLAGS) --compile $< -o $@
 
 clean:
-	rm -f *.o demo test
+	rm -f *.o demo test main myMain
