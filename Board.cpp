@@ -70,7 +70,7 @@ namespace ariel {
         }
     }
 
-    void Board::post(int row, int column, ariel::Direction direction, std::string message) {
+    void Board::post(unsigned int  row, unsigned int  column, ariel::Direction direction, std::string message) {
         int i = 0;
         int j = 0;
         fix_proportion(row, column, message.size(), direction);
@@ -81,7 +81,7 @@ namespace ariel {
     }
 
 
-    std::string Board::read(int row, int column, ariel::Direction direction, int length) {
+    std::string Board::read(unsigned int  row, unsigned int  column, ariel::Direction direction, int length) {
         std::string ans;
         int i = 0;
         int j = 0;
