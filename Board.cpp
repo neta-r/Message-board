@@ -8,10 +8,10 @@ namespace ariel {
 
 
     Board::Board() { //Initialize of the board's proportion to +-infinity
-        this->min_col = std::numeric_limits<int>::max();
-        this->min_row = std::numeric_limits<int>::max();
-        this->max_col = std::numeric_limits<int>::min();
-        this->max_row = std::numeric_limits<int>::min();
+        this->min_col = std::numeric_limits<unsigned int>::max();
+        this->min_row = std::numeric_limits<unsigned int>::max();
+        this->max_col = std::numeric_limits<unsigned int>::min();
+        this->max_row = std::numeric_limits<unsigned int>::min();
     }
 
     /*
@@ -23,9 +23,9 @@ namespace ariel {
 
 
     //This function fixes the board's proportions when the user want to post a vertical message.
-    void Board::fix_proportion(int row, int col, int length, ariel::Direction direction) {
-        int r_length=0;
-        int c_length=0;
+    void Board::fix_proportion(unsigned int row,unsigned int col,unsigned int length, ariel::Direction direction) {
+        unsigned int r_length=0;
+        unsigned int c_length=0;
         switch (direction) {
             case (Direction::Horizontal):
                 r_length = 0;
@@ -59,7 +59,7 @@ namespace ariel {
     }
 
     //This function decide whether to promote the i or the j according to the direction.
-    void plusplus(int &i, int &j, ariel::Direction direction) {
+    void plusplus(unsigned int &i,unsigned int &j, ariel::Direction direction) {
         switch (direction) {
             case (Direction::Horizontal):
                 j++;
@@ -71,21 +71,21 @@ namespace ariel {
     }
 
     void Board::post(unsigned int  row, unsigned int  column, ariel::Direction direction, std::string message) {
-        int i = 0;
-        int j = 0;
+        unsigned int i = 0;
+        unsigned int j = 0;
         fix_proportion(row, column, message.size(), direction);
-        for (int run = 0; run < message.size(); run++) {
+        for (unsigned int run = 0; run < message.size(); run++) {
             board[row + i][column + j] = message.at(run);
             plusplus(i, j, direction);
         }
     }
 
 
-    std::string Board::read(unsigned int  row, unsigned int  column, ariel::Direction direction, int length) {
+    std::string Board::read(unsigned int  row, unsigned int  column, ariel::Direction direction,unsigned int length) {
         std::string ans;
-        int i = 0;
-        int j = 0;
-        for (int run = 0; run<length; run++) {
+        unsigned int i = 0;
+        unsigned int j = 0;
+        for (unsigned int run = 0; run<length; run++) {
             try {
                 char cur = board.at(row + i).at(column + j);
                 ans += cur; //the char exist
@@ -100,10 +100,10 @@ namespace ariel {
 
 
     void Board::show() {
-        int min_r = min_row;
-        int min_c = min_col;
-        int max_r = max_row;
-        int max_c = max_col;
+        unsigned int min_r = min_row;
+        unsigned int min_c = min_col;
+        unsigned int max_r = max_row;
+        unsigned int max_c = max_col;
         // No posts were made.
         // Usage of the board's default proportions.
         if (this->min_col == std::numeric_limits<int>::max()) {
@@ -114,14 +114,17 @@ namespace ariel {
         }
         std::string ans;
         cout << "max_row: " <<max_row << endl;
-        int num_of_rows = max_r - min_r;
-        int num_of_cols = max_c - min_c;
-        if (num_of_rows==1) num_of_rows++;
-        for (int i = 0; i < num_of_rows; i++) {
+        unsigned int num_of_rows = max_r - min_r;
+        unsigned int num_of_cols = max_c - min_c;
+        if (num_of_rows==1) {
+            num_of_rows++;
+        }
+        for (unsigned int i = 0; i < num_of_rows; i++) {
             //sending to the read function each line (horizontal) as the number of the columns.
             ans += read(min_r + i, min_c, Direction::Horizontal, num_of_cols);
             ans += "\n";
         }
+        std::cout << ans << endl;
         std::cout << ans << endl;
     }
 }
